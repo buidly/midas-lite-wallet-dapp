@@ -13,7 +13,9 @@ import {
   apiTimeout,
   walletConnectV2ProjectId,
   environment,
-  sampleAuthenticatedDomains
+  sampleAuthenticatedDomains,
+  explorerAddress,
+  API_URL
 } from 'config';
 import { provider } from 'helpers/app';
 import { PageNotFound, Unlock } from 'pages';
@@ -29,7 +31,10 @@ const AppContent = () => {
       customNetworkConfig={{
         name: 'customConfig',
         apiTimeout,
-        walletConnectV2ProjectId
+        walletConnectV2ProjectId,
+        explorerAddress: explorerAddress,
+        egldLabel: 'OURO',
+        apiAddress: API_URL
       }}
       dappConfig={{
         shouldUseWebViewProvider: true,
