@@ -1,7 +1,7 @@
 import QRCode from 'react-qr-code';
 import { Copy, MxLink } from 'components';
 import { FormatAmount } from 'components/sdkDapp.components';
-import { useGetAccountInfo, useGetNetworkConfig } from 'hooks';
+import { useGetAccountInfo, useGetNetworkConfig } from 'lib';
 import { DataTestIdsEnum } from 'localConstants';
 import {
   explorerAddressSelector,
@@ -57,15 +57,23 @@ export const Account = () => {
             <a
               href={`${explorerAddress}/accounts/${address}`}
               target='_blank'
-              className='inline-block rounded-lg bg-blue-500 px-4 py-2 text-sm text-white'
+              className='inline-block rounded-lg bg-blue-600 px-4 py-2 text-sm text-white'
             >
               Open in Explorer
             </a>
             <MxLink
-              to={`${routeNames.send}`}
-              className='inline-block rounded-lg bg-blue-500 px-4 py-2 text-sm text-white'
+              className='inline-block rounded-lg bg-blue-600 px-4 py-2 text-sm text-white'
+              data-testid={DataTestIdsEnum.sendBtn}
+              to={routeNames.send}
             >
               Send
+            </MxLink>
+            <MxLink
+              className='inline-block rounded-lg bg-blue-600 px-4 py-2 text-sm text-white'
+              data-testid={DataTestIdsEnum.sendBtn}
+              to={routeNames.signMessage}
+            >
+              Sign Message
             </MxLink>
           </div>
         </div>

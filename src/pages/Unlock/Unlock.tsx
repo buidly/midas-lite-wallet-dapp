@@ -6,6 +6,7 @@ import {
   XaliasLoginButton
 } from 'components/sdkDapp.components';
 import { nativeAuth } from 'config';
+import { DataTestIdsEnum } from 'localConstants';
 import { routeNames } from 'routes';
 import {
   LedgerLoginButtonPropsType,
@@ -35,7 +36,7 @@ export const Unlock = () => {
       <div className='flex justify-center items-center'>
         <div
           className='flex flex-col p-6 items-center justify-center gap-4 rounded-xl bg-[#f6f8fa]'
-          data-testid='unlockPage'
+          data-testid={DataTestIdsEnum.unlockPage}
         >
           <div className='flex flex-col items-center gap-1'>
             <h2 className='text-2xl'>Login</h2>

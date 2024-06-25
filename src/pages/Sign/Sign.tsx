@@ -2,20 +2,24 @@ import { MouseEventHandler, useEffect } from 'react';
 import uniq from 'lodash/uniq';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { checkIsValidSender } from 'helpers/sdkDapp/sdkDapp.helpers';
+import { useReplyWithCancelled } from 'hooks';
+import { useAbortAndRemoveAllTxs } from 'hooks/useAbortAndRemoveAllTx';
 import {
   useGetAccount,
   useGetAccountFromApi,
   useGetLoginInfo,
-  useReplyWithCancelled
-} from 'hooks';
-import { useAbortAndRemoveAllTxs } from 'hooks/useAbortAndRemoveAllTx';
+  checkIsValidSender
+} from 'lib';
 import { hookSelector } from 'redux/selectors';
 import { resetHook } from 'redux/slices';
 import { routeNames } from 'routes';
 import { LoginMethodsEnum } from 'types';
 import { useValidateAndSignTxs } from './hooks';
 
+/*
+  The Sign page does not render any UI elements except for the error messages.
+  The signing process takes place in sdk-dapp and sdk-dapp opens the necessary modals.
+*/
 export const Sign = () => {
   const { hookUrl } = useSelector(hookSelector);
   const { loginMethod } = useGetLoginInfo();
@@ -28,6 +32,8 @@ export const Sign = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
+  // The useValidateAndSignTxs hook is used to validate, sign, and reply with signed transactions
+  // but, since we only need to show errors in this page, if any, we just use the rawTxs and txErrors objects
   const { rawTxs, txErrors } = useValidateAndSignTxs();
 
   const hasErrors = Object.keys(txErrors).length > 0;
@@ -44,17 +50,14 @@ export const Sign = () => {
   );
 
   const validateHook = async () => {
-    if (rawTxs.length === 0) {
+    const hasNoTransactions = rawTxs.length === 0;
+
+    if (hasNoTransactions) {
       return;
     }
 
-    // Extension has '/' as wallet origin and we need to navigate to dashboard
-    // in case an error occurs in the hook validation
-
     const redirectPathname = routeNames.dashboard;
-
     const invalidHook = !hookUrl || hasErrors;
-
     const isValidSender = checkIsValidSender(senderAccount, [address]);
 
     if (invalidHook) {

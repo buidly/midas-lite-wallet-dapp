@@ -1,12 +1,14 @@
-import { formatAmount } from 'helpers';
-import { PartialNftType } from 'lib';
-import { TokenType } from 'types';
+import { formatAmount } from 'lib';
+import { DECIMALS, DIGITS } from 'localConstants';
+import { PartialNftType, TokenType } from 'types';
 import { TokenOptionType } from '../types';
 
 export const getSelectedTokenBalance = ({
+  isNFT,
   tokens,
   tokenOption
 }: {
+  isNFT: boolean;
   tokens?: PartialNftType[] | TokenType[];
   tokenOption?: TokenOptionType;
 }) => {
@@ -22,12 +24,19 @@ export const getSelectedTokenBalance = ({
     return '0';
   }
 
+  // There may be NFTs without balance, so we return 1 by default
+  if (!('balance' in currentToken) && isNFT) {
+    return '1';
+  }
+
   if (!currentToken.decimals) {
     return currentToken.balance ?? '0';
   }
 
   return formatAmount({
     input: currentToken.balance ?? '0',
-    decimals: currentToken.decimals
+    decimals: currentToken.decimals ?? DECIMALS,
+    digits: DIGITS,
+    showLastNonZeroDecimal: false
   });
 };

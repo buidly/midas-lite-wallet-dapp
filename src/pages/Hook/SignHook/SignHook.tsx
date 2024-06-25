@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux';
 import { useLocation } from 'react-router-dom';
 import { useSignTxSchema } from 'hooks/useSignTxSchema';
 import { getSignHookData } from 'lib';
-import { HooksEnum } from 'localConstants';
+import { HooksEnum, HooksPageEnum } from 'localConstants';
 import { setHook } from 'redux/slices';
 import { HookValidationOutcome } from '../HookValidationOutcome';
 import { HookStateEnum } from '../types';
@@ -15,7 +15,7 @@ export const SignHook = () => {
   const { pathname, search } = useLocation();
 
   const data = useMemo(() => {
-    return pathname.includes(HooksEnum.sign) ? getData(search) : null;
+    return pathname.includes(HooksPageEnum.sign) ? getData(search) : null;
   }, [pathname]);
 
   const [validUrl, setValidUrl] = useState<HookStateEnum>(

@@ -2,13 +2,18 @@ import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import {
-  useGetLoginInfo,
   useLogout,
   useReplyToDapp,
   useReplyWithCancelled,
   useSignTxSchema
 } from 'hooks';
-import { getLoginHookData, getSignHookData, Transaction } from 'lib';
+import {
+  getLoginHookData,
+  getSignHookData,
+  getSignMessageHookData,
+  Transaction,
+  useGetLoginInfo
+} from 'lib';
 import { HooksEnum } from 'localConstants';
 import { setHook } from 'redux/slices';
 import { routeNames } from 'routes';
@@ -123,6 +128,31 @@ export const PostMessageListener = () => {
         );
 
         navigate(routeNames.sign);
+        break;
+      }
+
+      case CrossWindowProviderRequestEnums.signMessageRequest: {
+        const payloadString = buildWalletQueryString({
+          params: { ...payload, callbackUrl }
+        });
+
+        const serializedPayload = `?${payloadString}`;
+
+        const data = getSignMessageHookData(serializedPayload);
+
+        if (data == null) {
+          return;
+        }
+
+        dispatch(
+          setHook({
+            type: HooksEnum.signMessage,
+            hookUrl: data.hookUrl,
+            callbackUrl
+          })
+        );
+
+        navigate(routeNames.signMessage);
         break;
       }
 

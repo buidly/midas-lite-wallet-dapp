@@ -1,10 +1,9 @@
 import { useEffect, useMemo, useState } from 'react';
-import { getLogoutHookData } from '@multiversx/sdk-js-web-wallet-io';
-import { replyToDapp } from '@multiversx/sdk-js-web-wallet-io/out/replyToDapp/replyToDapp';
 import { useDispatch } from 'react-redux';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useLogout } from 'hooks';
-import { HooksEnum } from 'localConstants';
+import { getLogoutHookData, replyToDapp } from 'lib';
+import { HooksEnum, HooksPageEnum } from 'localConstants';
 import { setHook } from 'redux/slices';
 import { routeNames } from 'routes';
 import { CrossWindowProviderResponseEnums } from 'types';
@@ -19,7 +18,7 @@ export const LogoutHook = () => {
   const logout = useLogout();
 
   const data = useMemo(() => {
-    return pathname.includes(HooksEnum.logout)
+    return pathname.includes(HooksPageEnum.logout)
       ? getLogoutHookData(search)
       : null;
   }, [pathname]);

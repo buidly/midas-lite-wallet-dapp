@@ -1,13 +1,12 @@
 import { useSelector } from 'react-redux';
 import { Navigate, useLocation } from 'react-router-dom';
 import { Loader } from 'components';
+import { useReplyToDapp, useRedirectPathname } from 'hooks';
 import {
-  useReplyToDapp,
   useGetAccount,
   useGetIsWalletConnectV2Initialized,
-  useGetLoginInfo,
-  useRedirectPathname
-} from 'hooks';
+  useGetLoginInfo
+} from 'lib';
 import { HooksEnum } from 'localConstants';
 import { hookSelector } from 'redux/selectors';
 import { routeNames } from 'routes';
@@ -48,7 +47,9 @@ export const HookValidationOutcome = ({
 
   if (isInvalid) {
     // login hook is invalid, meaning user cannot see dashboard
-    if ([HooksEnum.login, HooksEnum.sign].includes(hook)) {
+    if (
+      [HooksEnum.login, HooksEnum.sign, HooksEnum.signMessage].includes(hook)
+    ) {
       return <Navigate to={routeNames.unlock} replace />;
     }
 
@@ -60,7 +61,9 @@ export const HookValidationOutcome = ({
   if (
     isValid &&
     registeredHook &&
-    [HooksEnum.sign, HooksEnum.login].includes(registeredHook)
+    [HooksEnum.login, HooksEnum.sign, HooksEnum.signMessage].includes(
+      registeredHook
+    )
   ) {
     switch (loginMethod) {
       case LoginMethodsEnum.none: {

@@ -37,7 +37,6 @@ const AppContent = () => {
         apiAddress: API_URL
       }}
       dappConfig={{
-        shouldUseWebViewProvider: true,
         logoutRoute: routeNames.unlock
       }}
       customComponents={{

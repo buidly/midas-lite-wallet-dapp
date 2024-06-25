@@ -1,5 +1,5 @@
 import { useSelector } from 'react-redux';
-import { useGetAccount } from 'hooks/index';
+import { useGetAccount } from 'lib';
 import { HooksEnum } from 'localConstants';
 import { hookSelector } from 'redux/selectors';
 import { routeNames } from 'routes';
@@ -20,6 +20,8 @@ export const useRedirectPathname = () => {
     switch (hook) {
       case HooksEnum.sign:
         return routeNames.sign;
+      case HooksEnum.signMessage:
+        return routeNames.signMessage;
       case HooksEnum.login: {
         if (!isLoggedIn) {
           return routeNames.unlock;
